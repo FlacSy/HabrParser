@@ -1,9 +1,0 @@
-README.md
-setup.py
-HabrParser.egg-info/PKG-INFO
-HabrParser.egg-info/SOURCES.txt
-HabrParser.egg-info/dependency_links.txt
-HabrParser.egg-info/requires.txt
-HabrParser.egg-info/top_level.txt
-habr_parser/__init__.py
-habr_parser/parser.py

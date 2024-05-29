@@ -5,11 +5,12 @@
 
 ## Установка
 Чтобы установить библиотеку `HabrParser`, воспользуйтесь pip:
-[PyPi]()
+
+[PyPi](https://pypi.org/project/py-habr-parser)
 ```bash
-pip install HabrParser
+pip install py-habr-parser
 ```
-[GitHub]()
+[GitHub](https://github.com/FlacSy/HabrParser)
 ```bash
 pip install git+https://github.com/FlacSy/HabrParser
 ```

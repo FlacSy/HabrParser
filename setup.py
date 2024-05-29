@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='HabrParser',
+    name='py-habr-parser',
     version='1.0.0',
     description='Python library for scraping and retrieving articles, comments, and other content from the Habr website.',
     url='https://github.com/FlacSy/HabrParser',

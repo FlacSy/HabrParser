@@ -1,4 +1,7 @@
 __pycache__/
 tests/*
+dist
+build
+py_habr_parser.egg-info
 .venv
 .vscode
