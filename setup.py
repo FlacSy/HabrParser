@@ -1,10 +1,15 @@
 from setuptools import setup, find_packages
 
+with open('README.md', encoding='utf-8') as f:
+    long_description = f.read()
+
 setup(
     name='py-habr-parser',
     version='1.0.0',
     description='Python library for scraping and retrieving articles, comments, and other content from the Habr website.',
     url='https://github.com/FlacSy/HabrParser',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     author='FlacSy',
     author_email='flacsy.x@gmail.com',
     license='MIT',
