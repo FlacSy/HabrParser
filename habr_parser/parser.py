@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import random
 from typing import List, Tuple, Optional
+from markdownify import markdownify as md
 
 class HabrParser:
     def __init__(self):
@@ -9,6 +10,12 @@ class HabrParser:
         self.cache = {}
 
     def _get_soup(self, url: str) -> BeautifulSoup:
+        """
+        Получает и кэширует объект BeautifulSoup для заданного URL.
+        
+        :param url: URL страницы.
+        :return: Объект BeautifulSoup.
+        """
         if url in self.cache:
             return self.cache[url]
         
@@ -27,12 +34,18 @@ class HabrParser:
         :param page: Номер страницы.
         :return: Списки заголовков и ссылок статей.
         """
-        category_url = f"{self.base_url}/ru/flows/{category}/page{page}" if category else f"{self.base_url}/ru/articles/page{page}"
+        category_url = (
+            f"{self.base_url}/ru/flows/{category}/page{page}" 
+            if category else f"{self.base_url}/ru/articles/page{page}"
+        )
         soup = self._get_soup(category_url)
 
         articles = soup.find_all('h2', class_='tm-title tm-title_h2')
         articles_titles = [article.find('span').text.strip() for article in articles]
-        articles_links = [self.base_url + article.find('a', class_='tm-title__link').get('href') for article in articles]
+        articles_links = [
+            self.base_url + article.find('a', class_='tm-title__link').get('href') 
+            for article in articles
+        ]
 
         return articles_titles, articles_links
 
@@ -65,7 +78,10 @@ class HabrParser:
         soup = self._get_soup(article_url)
         articles_title = soup.find('title').text.strip()
         articles_link = requests.get(article_url).url
-        articles_image = soup.find('figure', class_='full-width').find('img').get('data-src') if soup.find('figure', class_='full-width') else None
+        articles_image = (
+            soup.find('figure', class_='full-width').find('img').get('data-src') 
+            if soup.find('figure', class_='full-width') else None
+        )
 
         return articles_title, articles_link, articles_image
     
@@ -74,21 +90,21 @@ class HabrParser:
         Получает текст статьи с выбранной статьи на Хабре по её ID.
 
         :param article_id: ID статьи на Хабре.
-        :return: Заголовок, ссылка и текст статьи.
+        :return: Заголовок, ссылка и текст статьи в формате markdown.
         """
         article_url = f"{self.base_url}/ru/articles/{article_id}/"
         soup = self._get_soup(article_url)
-        articles_text = soup.find('div', class_='tm-article-body').text.strip()
+        articles_text = soup.find('div', class_='tm-article-body').prettify().replace('div', 'p')
 
         return articles_text
 
-    def get_random_article_id(self) -> int:
+    def get_random_article_id(self, category: Optional[str] = None, pages: int = 1) -> int:
         """
         Получает случайный ID статьи на Хабре.
 
         :return: ID статьи на Хабре.
         """
-        random_link = self.get_random_article()[1]
+        random_link = self.get_random_article(category, pages)[1]
         article_id = random_link.split('/')[-2]
 
         return int(article_id)
